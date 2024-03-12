@@ -410,7 +410,7 @@ rememotech rememotech
     // SD card
     .SD_CLK              (sdclk),
     .SD_CMD              (sdmosi),
-    .SD_DAT              (vsdmiso),
+    .SD_DAT              (sdmiso),
     .SD_DAT3             (sdss),
     // SDRAM
 	 .SRAM_CE_N           (n_sRamCS),
