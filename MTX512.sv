@@ -14,6 +14,7 @@
 //  with this program; if not, write to the Free Software Foundation, Inc.,
 //  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //============================================================================
+`default_nettype none
 
 
 module guest_top(
@@ -315,13 +316,8 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .SD_IMAGES(1), .PS2DIV(500), .FEATURES(32
 	.SPI_MOSI       	(SPI_DI         	),
 	.buttons        	(buttons        	),
 	.switches       	(switches      	),
-	.scandoubler_disable (scandoubler_disable	),
 	.ypbpr          	(ypbpr          	),
-	.no_csync         (no_csync         ),
-	.key_strobe     	(key_strobe     	),
-	.key_pressed    	(key_pressed    	),
-	.key_extended   	(key_extended   	),
-	.key_code       	(key_code       	),
+
 	.ps2_kbd_clk      (ps2_kbd_clk      ),
 	.ps2_kbd_data     (ps2_kbd_data     ),
 	.joystick_0       (joy1             ),
@@ -336,11 +332,10 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .SD_IMAGES(1), .PS2DIV(500), .FEATURES(32
 	.sd_conf                     (sd_conf       ),
 	.sd_sdhc                     (sd_sdhc       ),
 	.sd_dout                     (sd_buff_dout  ),
-	.sd_dout_strobe              (sd_dout_strobe),
 	.sd_din                      (sd_buff_din   ),
-	.sd_din_strobe               (sd_din_strobe ),
 	.sd_buff_addr                (sd_buff_addr  ),
-	.img_mounted                 (img_mounted   ),
+	.sd_dout_strobe              (sd_buff_wr),
+   .img_mounted                 (img_mounted   ),
 	.img_size                    (img_size      )
 );
 
@@ -505,7 +500,6 @@ mist_video #(.COLOR_DEPTH(4), .SD_HCNT_WIDTH(11), .OUT_COLOR_DEPTH(VGA_BITS), .B
 	.ce_divider   (1'b0       ),
 	
 	.scandoubler_disable ( 1'b1 ),
-	.no_csync    ( no_csync   ),
 	.ypbpr       ( ypbpr      ),
 	.rotate      ( 2'b00      ),
 	.blend       ( 1'b0       ),
@@ -534,10 +528,22 @@ wire vsdmiso;
 
 sd_card sd_card
 (
-        .*,
+
 		  .clk_sys(clk_sys),
 		  .img_mounted(img_mounted),
-		  .allow_sdhc(sd_sdhc),
+		  .img_size(img_size),
+		  .sd_lba(sd_lba),
+		  .sd_wr(sd_wr),
+		  .sd_rd(sd_rd),
+		  .sd_ack(sd_ack),
+		  .sd_ack_conf(sd_ack_conf),
+		  .sd_sdhc(sd_sdhc),
+		  .sd_buff_dout(sd_buff_dout),
+		  .sd_buff_din(sd_buff_din),
+		  .sd_buff_addr(sd_buff_addr),
+		  .sd_buff_wr(sd_buff_wr),
+		  
+		  .allow_sdhc(1'b0),
         .sd_sck(sdclk),
         .sd_cs(sdss),
         .sd_sdi(sdmosi),
