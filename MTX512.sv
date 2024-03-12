@@ -320,6 +320,10 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .SD_IMAGES(1), .PS2DIV(500), .FEATURES(32
 
 	.ps2_kbd_clk      (ps2_kbd_clk      ),
 	.ps2_kbd_data     (ps2_kbd_data     ),
+	.key_strobe     	(key_strobe     	),
+	.key_pressed    	(key_pressed    	),
+	.key_extended   	(key_extended   	),
+	.key_code       	(key_code       	),
 	.joystick_0       (joy1             ),
 	.joystick_1       (joy2             ),
 	.status         	(status         	),
@@ -520,7 +524,7 @@ wire sdclk;
 wire sdmosi;
 wire sdss;
 
-wire vsdmiso;
+wire sdmiso;
 
 //assign sd_sdhc = 1'b0;
 
@@ -547,6 +551,6 @@ sd_card sd_card
         .sd_sck(sdclk),
         .sd_cs(sdss),
         .sd_sdi(sdmosi),
-        .sd_sdo(vsdmiso)
+        .sd_sdo(sdmiso)
 );
 endmodule
